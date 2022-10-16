@@ -3,9 +3,10 @@ const ctx = canvas.getContext("2d")
 
 let h = canvas.height = 600
 let w = canvas.width = 1200
-const numberOfCircles = 20
 let rabbit = 0
 let tunnel = 0
+
+let showRabbit = true
 
 // running gameover
 let gameStatus = "running"
@@ -16,9 +17,13 @@ window.addEventListener("keyup", (e) => {
             document.location.reload()
         }
         else {
-            if (Math.cos(rabbit.angle) > 0.8 && Math.cos(rabbit.angle) < 1)
-                score+=1
+            if (rabbit.status==="inTunnel")
+                if (Math.cos(rabbit.angle) > 0.68 && rabbit.x<tunnel.x)
+                    score+=1
         }
+    }
+    else if (String(e.keyCode)==='72') {
+        showRabbit = showRabbit ? false : true
     }
 })
 
@@ -42,7 +47,7 @@ class Tunnel extends Circle {
     draw(ctx) {
         ctx.beginPath();
         ctx.fillStyle = this.color;
-        ctx.arc(this.x, this.y, this.radius, 30, Math.PI * 3+0.8);
+        ctx.arc(this.x, this.y, this.radius, 29.85, Math.PI * 3+0.8);
         ctx.lineWidth = this.lineWidth
         ctx.stroke()
     }
@@ -83,6 +88,12 @@ class Rabbit extends Circle {
     }
 
     draw(ctx) {
+        if (this.status==="inTunnel") {
+            if (Math.cos(this.angle) < 0.68 || this.x > tunnel.x) {
+                if(!showRabbit)
+                    return
+            }
+        }
         ctx.beginPath();
         ctx.fillStyle = this.color;
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -105,9 +116,9 @@ function gameLoop() {
     }
     ctx.font = "30px Comic"
     ctx.fillText("score : " + score, 20, 30)
+    rabbit.move(tunnel)
     tunnel.draw(ctx)
     rabbit.draw(ctx)
-    rabbit.move(tunnel)
     requestAnimationFrame(gameLoop)
 }
 
