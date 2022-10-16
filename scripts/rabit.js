@@ -122,8 +122,10 @@ function gameLoop() {
 
     ctx.font = "14px Comic"
     ctx.fillStyle = "grey"
-    ctx.fillText("Press H to hide a player" , 150, 50)
-    ctx.fillText("Press R to restart the game" , 150, 70)
+    ctx.fillText("Press SPACE when the circle came out from tunnel" , 20, 250)
+    ctx.fillText("to score points" , 20, 264)
+    ctx.fillText("Press H to hide a circle" , 20, 284)
+    ctx.fillText("Press R to restart the game" , 20, 304)
     rabbit.move(tunnel)
     tunnel.draw(ctx)
     rabbit.draw(ctx)
@@ -138,7 +140,7 @@ function setUp() {
     gameStatus = "running"
     score = 0
     const randomAngle = 1 * Math.PI / 180
-    tunnel = new Tunnel(500, 350, "blue",  200, 12)
+    tunnel = new Tunnel(550, 350, "blue",  200, 12)
     rabbit = new Rabbit(20, 150, "blue",  20, 1, 5)
 }
 
