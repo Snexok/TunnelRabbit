@@ -25,6 +25,9 @@ window.addEventListener("keyup", (e) => {
     else if (String(e.keyCode)==='72') {
         showRabbit = showRabbit ? false : true
     }
+    else if (String(e.keyCode)==='82') {
+        document.location.reload()
+    }
 })
 
 class Circle {
@@ -116,6 +119,11 @@ function gameLoop() {
     }
     ctx.font = "30px Comic"
     ctx.fillText("score : " + score, 20, 30)
+
+    ctx.font = "14px Comic"
+    ctx.fillStyle = "grey"
+    ctx.fillText("Press H to hide a player" , 150, 50)
+    ctx.fillText("Press R to restart the game" , 150, 70)
     rabbit.move(tunnel)
     tunnel.draw(ctx)
     rabbit.draw(ctx)
