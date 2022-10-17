@@ -65,7 +65,7 @@ class Line {
 
         if (rabbit.status==="inTunnel")
             if (this.startX<=this.endX)
-                this.startX+=30
+                this.startX+=35
 
         // draw a red line
         ctx.beginPath();
