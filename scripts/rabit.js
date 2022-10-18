@@ -4,8 +4,15 @@ const ctx = canvas.getContext("2d")
 let h = canvas.height = 600
 let w = canvas.width = 1200
 
+let textColor = 'wheat'
+
 let rabbit = 0
 let tunnel = 0
+let tunnelStrocke = 0
+let tunnelEntrance = 0
+let tunnelEntranceStrocke = 0
+let tunnelExit = 0
+let tunnelExitStrocke = 0
 let openTunnel = 0
 let line = 0
 
@@ -50,7 +57,7 @@ class Circle {
 }
 
 class Line {
-    constructor(startX=0, endX=555, startY=178, endY=178, color) {
+    constructor(startX=0, endX=555, startY=182, endY=182, color) {
         this.startX = startX
         this.endX = endX
         this.startY = startY
@@ -83,8 +90,17 @@ class Tunnel extends Circle {
     }
 
     draw(ctx) {
+        let pattern = 0
+        console.log(this.color)
+        if (this.color==='tunnel')
+            pattern = ctx.createPattern(images['brick'], "repeat");
+        else if (this.color==='tunnelEntrance')
+            pattern = ctx.createPattern(images['tunnelEntrance'], "repeat");
         ctx.beginPath();
-        ctx.strokeStyle = this.color;
+        if (this.color==='tunnel' || this.color==='tunnelEntrance')
+            ctx.strokeStyle = pattern;
+        else
+            ctx.strokeStyle = this.color;
         ctx.arc(this.x, this.y, this.radius, this.startAngle, this.endAngel);
         ctx.lineWidth = this.lineWidth
         ctx.stroke()
@@ -183,6 +199,12 @@ loadImages = function() {
     let imageSources = [{
         name: 'rabbit',
         id: 'rabbit'
+    },{
+        name: 'brick',
+        id: 'brick'
+    },{
+        name: 'tunnelEntrance',
+        id: 'tunnelEntrance'
     }]
     let numImages = imageSources.length;
     for (let i = numImages - 1; i >= 0; i--) {
@@ -195,9 +217,14 @@ function setUp() {
     gameStatus = "running"
     score = 0
     loadImages()
-    tunnel = new Tunnel(550, 350,29.85, Math.PI * 3+0.8, "black",  200, 60)
-    openTunnel = new Tunnel(550, 350,Math.PI+0.8, 4.74, "green",  200, 60)
-    rabbit = new Rabbit(20, 150, "blue",  20, 1, 1)
+    tunnel = new Tunnel(550, 350,29.85, Math.PI * 3+0.8, "tunnel",  200, 60)
+    tunnelStrocke = new Tunnel(550, 350,29.83, Math.PI * 3+0.80, "black",  200, 68)
+    tunnelExit = new Tunnel(550, 350,Math.PI+0.7, Math.PI+0.8, "tunnelEntrance",  200, 80)
+    tunnelExitStrocke = new Tunnel(550, 350,Math.PI+0.68, Math.PI+0.82, "black",  200, 90)
+    tunnelEntrance = new Tunnel(550, 350,4.68, 4.78, "tunnelEntrance",  200, 80)
+    tunnelEntranceStrocke = new Tunnel(550, 350,4.66, 4.8, "black",  200, 90)
+    openTunnel = new Tunnel(550, 350,Math.PI+0.8, 4.74, "limegreen",  182, 26)
+    rabbit = new Rabbit(20, 150, "blue",  20, 1, 2)
     line = new Line()
 }
 
@@ -212,17 +239,23 @@ function gameLoop() {
 
 
     ctx.font = "14px Comic"
-    ctx.fillStyle = "grey"
+    ctx.fillStyle = textColor
     ctx.fillText("Press SPACE when the circle came out from tunnel" , 20, 250)
     ctx.fillText("to score points" , 20, 264)
     ctx.fillText("Press H to hide a circle" , 20, 284)
     ctx.fillText("Press R to restart the game" , 20, 304)
 
-    tunnel.draw(ctx)
     openTunnel.draw(ctx)
+    tunnelStrocke.draw(ctx)
+    tunnel.draw(ctx)
     line.draw(ctx)
 
     rabbit.update(ctx)
+
+    tunnelEntranceStrocke.draw(ctx)
+    tunnelEntrance.draw(ctx)
+    tunnelExitStrocke.draw(ctx)
+    tunnelExit.draw(ctx)
 
     requestAnimationFrame(gameLoop)
 }
