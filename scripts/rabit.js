@@ -301,20 +301,8 @@ loadImages = function() {
 }
 
 
-function decodeBase64ToArrayBuffer(base64String) {
-    let len = (base64String.length / 4) * 3;
-    let str = atob(base64String);
-    let arrayBuffer = new ArrayBuffer(len);
-    let bytes = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < len; i++) {
-        bytes[i] = str.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
-
 loadSounds = function() {
-    soundHit = new Audio('assets/offline-sound-hit.mp3');
+    soundHit = new Audio('assets/alarm-106151.mp3');
     soundHit.volume = 1
 }
 
