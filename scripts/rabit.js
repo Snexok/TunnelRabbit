@@ -434,6 +434,7 @@ function setUp(restart=false) {
     if (!restart) {
         loadImages()
         loadSounds()
+        targetPoint = new TargetPoint()
     }
     showTunnel = true
     gameStatus = "preIntro"
@@ -447,7 +448,6 @@ function setUp(restart=false) {
     openTunnel = new Tunnel(550, 350,0, Math.PI *2, "openTunnel",  182, 26)
     rabbit = new Rabbit(30, 150, "blue",  20, 1, 2)
     line = new Line()
-    targetPoint = new TargetPoint()
 }
 
 
@@ -464,11 +464,11 @@ function gameLoop() {
 
     ctx.fillStyle = textColor
     ctx.font = "16px Helvetica"
-    ctx.fillText("Пробел -> действие", 20, 450+20*0)
+    ctx.fillText(`Пробел -> ${gameStatus === "preIntro" ? "начать испытание" : "остановить зайца"}`, 20, 450+20*0)
     ctx.fillText("1-2-3-4-5 -> скорость бега", 20, 450+20*1)
     ctx.fillText("У -> убрать туннель", 20, 450+20*2)
     ctx.fillText("К -> начать испытание заново", 20, 450+20*3)
-    ctx.fillText("Е -> " + (trap.seted ? "убрать" : "активировать") + " ловушку", 20, 450+20*4)
+    ctx.fillText(`Е -> ${trap.seted ? "убрать" : "активировать"} ловушку`, 20, 450+20*4)
     ctx.fillText("Н -> сохранить сессию и начать новую", 20, 450+20*5)
 
     openTunnel.draw(ctx)
@@ -486,6 +486,9 @@ function gameLoop() {
     tunnelExit.draw(ctx)
 
     if(gameStatus !== "gameOver")
+        targetPoint.draw(ctx)
+
+    if(gameStatus === "gameOver" && showTunnel)
         targetPoint.draw(ctx)
 
     if(gameStatus === "gameOver") {
